@@ -24,6 +24,7 @@ import {
   setRefetchedCredentials,
   useGetCurrentUserQuery,
 } from "./redux/authSlice";
+import CurrencyConverter from "./components/Currency/CurrencyConverter";
 const Home = lazy(() => import("./pages/Home"));
 const ContactPage = lazy(() => import("./pages/Contacts/ContactPage"));
 const LoginPage = lazy(() => import("./pages/Contacts/LoginPage"));
@@ -35,22 +36,10 @@ let router = createBrowserRouter(
       path: "/",
       element: <Main />,
       errorElement: <Error />,
-      children: [
-        //   {
-        //     // loader: () => import("./pages/Home"),
-        //     element: <PublicRoute component={Home} />,
-        //     index: true,
-        //   },
-        //   {
-        //     path: "contacts",
-        //     // loader: () => import("./pages/Movies"),
-        //     element: <PrivateRoute component={ContactPage} redirectTo="/login" />,
-        //   },
-      ],
     },
     {
-      path: "/images-search",
-      element: <ImageSearch />,
+      path: "/currency-converter",
+      element: <CurrencyConverter />,
     },
     {
       path: "/movie-gallery",
