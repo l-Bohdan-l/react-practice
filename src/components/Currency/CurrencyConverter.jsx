@@ -2,7 +2,8 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 // import CurrencyAPI from "@everapi/currencyapi-js";
-// import currencyapi from "@everapi/currencyapi-js";
+
+import { BsFlag } from "react-icons/bs";
 
 import {
   AmountLabel,
@@ -12,7 +13,7 @@ import {
   Form,
   SelectWrapper,
 } from "./CurrencyConverter.styled";
-// import { fetchCurrency } from "../../services/fetchCurrency";
+import { fetchCurrency, fetchConvert } from "../../services/fetchCurrency";
 
 import data from "../../currency.json";
 import { countries } from "../../countries.js";
@@ -21,18 +22,10 @@ export default function CurrencyConverter() {
   const [currencies, setCurrencies] = useState(data);
   const [currenciesCodes, setCurrenciesCodes] = useState([]);
   const [code, setCode] = useState("");
-  const [firstFlag, setFirstFlag] = useState(
-    // "https://flagcdn.com/16x12/ua.png"
-    "ua"
-  );
-  const [secondFlag, setSecondFlag] = useState(
-    // "https://flagcdn.com/16x12/ua.png"
-    "ua"
-  );
+  const [firstFlag, setFirstFlag] = useState("ua");
+  const [secondFlag, setSecondFlag] = useState("ua");
+  const [result, setResult] = useState(0);
 
-  // axios.defaults.baseURL = "https://restcountries.com/v3.1/";
-
-  // const currencyApi = new CurrencyAPI(process.env.REACT_APP_API_KEY);
   useEffect(() => {
     const getCurrCodes = function () {
       currencies.map((el) => {
@@ -54,18 +47,6 @@ export default function CurrencyConverter() {
     setAmount(target);
   };
 
-  // useEffect(() => {
-  //   const getFlag = async () => {
-  //     const res = await axios.get(`currency/${code.toLowerCase()}`);
-  //     const flag = res.data[0].flags.png;
-  //     //   setFlag(flag);
-  //     switch (code) {
-  //     }
-  //   };
-
-  //   // getFlag();
-  // }, [code]);
-
   const selectHandleChange = async (e) => {
     const target = e.target.selectedOptions[0].text;
     setCode(target);
@@ -81,16 +62,9 @@ export default function CurrencyConverter() {
     if (currentCurr[0] === "EUR") {
       country = "eu";
     }
-    console.log("country", country);
-    // const res = await axios.get(`currency/${target.toLowerCase()}`);
-    // // const flag = res.data[0].flags.png;
-    // const flag = res.data.find((el) => el.currencies[0] === target);
 
-    // console.log("code", target, flag);
-    // console.log(
-    //   "handle",
-    //   res.data.map((el) => el)
-    // );
+    console.log("country", country);
+
     switch (e.target.name) {
       case "convertFrom":
         setFirstFlag(country);
@@ -102,26 +76,23 @@ export default function CurrencyConverter() {
         break;
     }
   };
-  // const getFlag ()
-  // const convertApi = async (amount, convertFrom, convertTo) => {
-  //   const res = currencyApi
-  //     .convert(amount, convertFrom, convertTo)
-  //     .then((response) => {
-  //       console.log("response", response);
-  //     });
-  // };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // fetchCurrency().then((res) => console.log(res.data.supported_codes));
-    // const form = e.target;
+    const form = e.target;
     // console.log("form", form);
     // const amount = form.amount.value;
-    // const convertFrom = form.convertFrom.value;
-    // const convertTo = form.convertTo.value;
-    // console.log("sudmit", amount, convertFrom, convertTo);
+    const convertFrom = form.convertFrom.value;
+    const convertTo = form.convertTo.value;
+    console.log("sudmit", amount, convertFrom, convertTo);
     // convertApi(amount, convertFrom, convertTo);
-    // form.reset();
+    await fetchConvert(amount, convertFrom, convertTo).then((res) => {
+      const result = res.data.conversion_result;
+      setResult(result.toFixed(2));
+      console.log("res", result);
+    });
+    form.reset();
+    setAmount(0);
   };
   console.log("amount", amount);
   return (
@@ -141,15 +112,19 @@ export default function CurrencyConverter() {
         <ConvertLabel>
           From
           <SelectWrapper>
-            <img
-              src={`https://flagcdn.com/16x12/${firstFlag
-                .toLowerCase()
-                .trim()}.png`}
-              // src={firstFlag}
-              width="16"
-              height="12"
-              alt="Ukraine"
-            />
+            {firstFlag ? (
+              <img
+                src={`https://flagcdn.com/16x12/${firstFlag
+                  .toLowerCase()
+                  .trim()}.png`}
+                // src={firstFlag}
+                width="16"
+                height="12"
+                alt="Ukraine"
+              />
+            ) : (
+              <BsFlag />
+            )}
             <div>
               <select
                 defaultValue=""
@@ -173,12 +148,16 @@ export default function CurrencyConverter() {
         <ConvertLabel>
           To
           <SelectWrapper>
-            <img
-              src={`https://flagcdn.com/16x12/${secondFlag
-                .toLowerCase()
-                .trim()}.png`}
-              alt=";"
-            />
+            {secondFlag ? (
+              <img
+                src={`https://flagcdn.com/16x12/${secondFlag
+                  .toLowerCase()
+                  .trim()}.png`}
+                alt=";"
+              />
+            ) : (
+              <BsFlag />
+            )}
             {/* <img src={secondFlag} width="16" height="12" alt="Ukraine" /> */}
             <select
               defaultValue=""
@@ -199,7 +178,7 @@ export default function CurrencyConverter() {
           </SelectWrapper>
         </ConvertLabel>
         <Button type="submit">Convert</Button>
-        <p>Result</p>
+        {<p>{result}</p>}
       </Form>
     </Container>
   );
