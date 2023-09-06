@@ -6,8 +6,8 @@ export default function Main() {
       <Title>Choose project</Title>
       <List>
         <LinkStyled to="/currency-converter">Currency Converter</LinkStyled>
-        <LinkStyled to="/movie-gallery">Movies</LinkStyled>
-        <LinkStyled to="/phonebook">Phone book</LinkStyled>
+        <LinkStyled to="/ip">IP Lookup system</LinkStyled>
+        <LinkStyled to="/image-to-text"> Image to text convert</LinkStyled>
       </List>
     </Section>
   );

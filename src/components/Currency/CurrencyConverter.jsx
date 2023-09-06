@@ -83,8 +83,6 @@ export default function CurrencyConverter() {
       country = "eu";
     }
 
-    console.log("country", country);
-
     switch (e.target.name) {
       case "convertFrom":
         setFirstFlag(country);
@@ -100,13 +98,7 @@ export default function CurrencyConverter() {
   };
 
   const handleSubmit = async (e, { resetForm }) => {
-    // e.preventDefault();
     const form = e.target;
-    // console.log("form", form);
-    // const amount = form.amount.value;
-    // const convertFrom = form.convertFrom.value;
-    // const convertTo = form.convertTo.value;
-    // convertApi(amount, convertFrom, convertTo);
     await fetchConvert(amount, convertFrom, convertTo)
       .then((res) => {
         setStatus(Status.PENDING);
@@ -123,7 +115,7 @@ export default function CurrencyConverter() {
     setFirstFlag("ua");
     setSecondFlag("ua");
   };
-  console.log("total", amount, firstFlag, secondFlag, result, status);
+
   return (
     <Container>
       <BackBtn to="/">Back</BackBtn>
