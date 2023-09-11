@@ -8,6 +8,7 @@ export default function Main() {
         <LinkStyled to="/currency-converter">Currency Converter</LinkStyled>
         <LinkStyled to="/ip">IP Lookup system</LinkStyled>
         <LinkStyled to="/image-to-text"> Image to text convert</LinkStyled>
+        <LinkStyled to="/weather">Weather</LinkStyled>
       </List>
     </Section>
   );

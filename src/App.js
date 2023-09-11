@@ -1,16 +1,21 @@
 import "./App.css";
-import { useState, useEffect, lazy } from "react";
 import "react-toastify/dist/ReactToastify.css";
+
+import { useState, useEffect, lazy } from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+
 import { nanoid } from "nanoid";
 
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
+import { SharedLayout } from "./components/SharedLayout/SharedLayout";
 import Main from "./pages/Main/Main";
 import { Error } from "./components/Error";
-import { SharedLayout } from "./components/SharedLayout/SharedLayout";
 import CurrencyConverter from "./components/Currency/CurrencyConverter";
 import IPLookupPage from "./pages/IPLookupPage/IPLookupPage";
 import { ImageToTextPage } from "./pages/ImageToTextPage/ImageToTextPage";
+import { WeatherPage } from "./pages/Weather/Weather";
+import { persistor, store } from "./redux/store";
 
 let router = createBrowserRouter(
   [
@@ -34,6 +39,11 @@ let router = createBrowserRouter(
       errorElement: <Error />,
     },
     {
+      path: "/weather",
+      element: <WeatherPage />,
+      errorElement: <Error />,
+    },
+    {
       path: "*",
       element: <Error />,
     },
@@ -44,7 +54,9 @@ let router = createBrowserRouter(
 function App() {
   return (
     <>
-      <RouterProvider router={router} fallbackElement={<p>Loading...</p>} />
+      <PersistGate loading={null} persistor={persistor}>
+        <RouterProvider router={router} fallbackElement={<p>Loading...</p>} />
+      </PersistGate>
     </>
   );
 }

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const key = "A4/+HyAHkEeqJd+x3dWUFA==PGLxO0bXwWhnpRfE";
+const key = process.env.REACT_APP_API_NINJAS_KEY;
 
 export const checkApi = async (ip) => {
   const baseUrl = "https://api.api-ninjas.com/v1/iplookup?address=";
