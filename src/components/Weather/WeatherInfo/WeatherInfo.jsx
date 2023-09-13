@@ -1,4 +1,13 @@
+import { useDispatch, useSelector } from "react-redux";
+
+import { useGetWeatherForCityQuery } from "../../../redux/weatherSlice.js";
+import { weatherCityName } from "../../../redux/selectors/selectors.js";
+
 export const WeatherInfo = () => {
+  const cityName = useSelector(weatherCityName);
+  const dispatch = useDispatch();
+  console.log(cityName);
+  const { data, error, isLoading } = useGetWeatherForCityQuery();
   return (
     <>
       <div>

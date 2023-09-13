@@ -1,8 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-
-import weatherReducer from "./weatherSlice";
-// import { setupListeners } from "@reduxjs/toolkit/query";
-
+import { setupListeners } from "@reduxjs/toolkit/dist/query";
 import {
   persistReducer,
   persistStore,
@@ -15,6 +12,8 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
+import weatherReducer, { weatherApi } from "./weatherSlice";
+
 const persistConfig = {
   key: "weather",
   storage,
@@ -25,6 +24,7 @@ const persistedReducer = persistReducer(persistConfig, weatherReducer);
 export const store = configureStore({
   reducer: {
     weatherCityName: persistedReducer,
+    [weatherApi.reducerPath]: weatherApi.reducer,
   },
   middleware: (getDefaultMiddleware) => [
     ...getDefaultMiddleware({
@@ -32,9 +32,10 @@ export const store = configureStore({
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     }),
+    weatherApi.middleware,
   ],
 });
 
 export const persistor = persistStore(store);
 
-// setupListeners(store.dispatch);
+setupListeners(store.dispatch);

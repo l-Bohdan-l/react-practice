@@ -10,6 +10,7 @@ export const Wrapper = styled.div`
     rgba(9, 90, 121, 1) 28%,
     rgba(0, 164, 255, 1) 100%
   );
+  padding-top: 20px;
 `;
 
 export const Title = styled.h1`
