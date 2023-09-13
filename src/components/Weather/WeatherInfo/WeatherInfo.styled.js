@@ -8,10 +8,14 @@ export const Wrapper = styled.div`
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
   border-radius: 10px; */
   margin: 0 auto;
-  width: 80%;
-  height: 500px;
+  width: 700px;
+  height: 400px;
   display: flex;
   position: relative;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50px;
+  justify-content: flex-end;
+  align-items: flex-start;
 `;
 
 export const MainWeatherInfoBgImgWrapper = styled.div`
@@ -21,16 +25,25 @@ export const MainWeatherInfoBgImgWrapper = styled.div`
   background-size: cover;
   background-position: center;
   width: 300px;
-  filter: blur(4px);
+  filter: blur(2px);
   border-radius: 50px;
+  height: 420px;
+  position: absolute;
+  top: -10px;
+  left: -5px;
 `;
 
 export const MainWeatherInfoWrapper = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  padding: 10px;
+  padding: 20px 20px;
   width: 300px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* align-items: center; */
 `;
 
 export const Day = styled.p`
@@ -65,4 +78,22 @@ export const CityNameWrapper = styled.div`
   justify-content: center;
   align-items: center;
   gap: 5px;
+`;
+
+export const Temperature = styled.p`
+  font-size: 55px;
+  font-weight: 900;
+  text-align: left;
+`;
+
+export const WeatherType = styled.p`
+  font-size: 20px;
+  font-weight: 700;
+  text-align: left;
+  text-transform: capitalize;
+`;
+
+export const AdditionalInfoWrapper = styled.div`
+  width: 400px;
+  padding: 20px;
 `;

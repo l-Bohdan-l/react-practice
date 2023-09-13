@@ -6,6 +6,7 @@ import { BiCurrentLocation } from "react-icons/bi";
 import { weatherCityName } from "../../../redux/selectors/selectors.js";
 import { useGetWeatherForCityQuery } from "../../../redux/weatherSlice.js";
 import {
+  AdditionalInfoWrapper,
   CityName,
   CityNameWrapper,
   Day,
@@ -13,6 +14,8 @@ import {
   DayOfWeekItem,
   MainWeatherInfoBgImgWrapper,
   MainWeatherInfoWrapper,
+  Temperature,
+  WeatherType,
   Wrapper,
 } from "./WeatherInfo.styled.js";
 import { useGetCityImgQuery } from "../../../redux/cityImgSlice.js";
@@ -66,20 +69,24 @@ export const WeatherInfo = () => {
             src={imgUrl}
           ></MainWeatherInfoBgImgWrapper>
           <MainWeatherInfoWrapper>
-            <Day>{day}</Day>
-            <DayOfWeek>
-              <DayOfWeekItem>{date}</DayOfWeekItem>
-              <DayOfWeekItem>{month}</DayOfWeekItem>
-              <DayOfWeekItem>{year}</DayOfWeekItem>
-            </DayOfWeek>
-            <CityNameWrapper>
-              <BiCurrentLocation />
-              <CityName>{cityName}</CityName>
-            </CityNameWrapper>
-            <p>{data.temp}</p>
-            <p>Sunny</p>
+            <div>
+              <Day>{day}</Day>
+              <DayOfWeek>
+                <DayOfWeekItem>{date}</DayOfWeekItem>
+                <DayOfWeekItem>{month}</DayOfWeekItem>
+                <DayOfWeekItem>{year}</DayOfWeekItem>
+              </DayOfWeek>
+              <CityNameWrapper>
+                <BiCurrentLocation />
+                <CityName>{cityName}</CityName>
+              </CityNameWrapper>
+            </div>
+            <div>
+              <Temperature>{data.temp}°C</Temperature>
+              <WeatherType>Sunny</WeatherType>
+            </div>
           </MainWeatherInfoWrapper>
-          <div>
+          <AdditionalInfoWrapper>
             <p>humidity</p>
             <p>{data.humidity}</p>
             <p>wind speed</p>
@@ -92,7 +99,7 @@ export const WeatherInfo = () => {
             <p>{data.min_temp}</p>
             <p>max temp</p>
             <p>{data.max_temp}</p>
-          </div>
+          </AdditionalInfoWrapper>
         </Wrapper>
       )}
     </>
