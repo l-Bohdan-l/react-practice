@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { setupListeners } from "@reduxjs/toolkit/dist/query";
+import { setupListeners } from "@reduxjs/toolkit/query";
+import storage from "redux-persist/lib/storage";
 import {
   persistReducer,
   persistStore,
@@ -10,9 +11,10 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import storage from "redux-persist/lib/storage";
 
-import weatherReducer, { weatherApi } from "./weatherSlice";
+import weatherReducer from "./weatherSlice";
+import { weatherApi } from "./weatherSlice";
+import { cityImgApi } from "./cityImgSlice";
 
 const persistConfig = {
   key: "weather",
@@ -25,6 +27,7 @@ export const store = configureStore({
   reducer: {
     weatherCityName: persistedReducer,
     [weatherApi.reducerPath]: weatherApi.reducer,
+    [cityImgApi.reducerPath]: cityImgApi.reducer,
   },
   middleware: (getDefaultMiddleware) => [
     ...getDefaultMiddleware({
@@ -33,6 +36,7 @@ export const store = configureStore({
       },
     }),
     weatherApi.middleware,
+    cityImgApi.middleware,
   ],
 });
 

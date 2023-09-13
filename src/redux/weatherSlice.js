@@ -1,5 +1,29 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { fetchBaseQuery } from "@reduxjs/toolkit/query";
+
+const KEY = process.env.REACT_APP_API_NINJAS_KEY;
+
+export const weatherApi = createApi({
+  reducerPath: "weatherApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: "https://api.api-ninjas.com/v1/",
+  }),
+  prepareHeaders: (headers) => {},
+  tagTypes: ["Weather"],
+  endpoints: (builder) => ({
+    getWeatherForCity: builder.query({
+      query: (name) => ({
+        url: `weather?city=${name}`,
+        headers: { "X-Api-Key": KEY },
+        contentType: "application/json",
+      }),
+      providesTags: ["Weather"],
+    }),
+  }),
+});
+
+export const { useGetWeatherForCityQuery } = weatherApi;
 
 const initialState = {
   cityName: "",
@@ -14,20 +38,6 @@ export const weatherSlice = createSlice({
     },
   },
 });
-
-export const weatherApi = createApi({
-  reducerPath: "weatherApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "https://api.api-ninjas.com/v1/weather?city=",
-  }),
-  endpoints: (builder) => ({
-    getWeatherForCity: builder.query({
-      query: (name) => `${name}`,
-    }),
-  }),
-});
-
-export const { useGetWeatherForCityQuery } = weatherApi;
 
 // Action creators are generated for each case reducer function
 export const { searchCityValue } = weatherSlice.actions;

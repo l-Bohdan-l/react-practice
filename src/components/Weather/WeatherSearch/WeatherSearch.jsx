@@ -16,7 +16,7 @@ export const WeatherSearch = () => {
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
-    setValue(e.target.value);
+    setValue(e.target.value.toLowerCase().trim());
   };
 
   const handleSubmit = (e) => {
