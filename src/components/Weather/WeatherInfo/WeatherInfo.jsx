@@ -17,6 +17,8 @@ import {
   Temperature,
   WeatherType,
   Wrapper,
+  AdditionalInfoSubWrapper,
+  AdditionalInfo,
 } from "./WeatherInfo.styled.js";
 import { useGetCityImgQuery } from "../../../redux/cityImgSlice.js";
 
@@ -83,22 +85,36 @@ export const WeatherInfo = () => {
             </div>
             <div>
               <Temperature>{data.temp}°C</Temperature>
-              <WeatherType>Sunny</WeatherType>
+              {data}
             </div>
           </MainWeatherInfoWrapper>
           <AdditionalInfoWrapper>
-            <p>humidity</p>
-            <p>{data.humidity}</p>
-            <p>wind speed</p>
-            <p>{data.wind_speed}</p>
-            <p>temp</p>
-            <p>{data.temp}</p>
-            <p>feels like</p>
-            <p>{data.feels_like}</p>
-            <p>min temp</p>
-            <p>{data.min_temp}</p>
-            <p>max temp</p>
-            <p>{data.max_temp}</p>
+            <AdditionalInfoSubWrapper>
+              <AdditionalInfo>humidity</AdditionalInfo>
+              <AdditionalInfo>{data.humidity} %</AdditionalInfo>
+            </AdditionalInfoSubWrapper>
+            <AdditionalInfoSubWrapper>
+              <AdditionalInfo>wind speed</AdditionalInfo>
+              <AdditionalInfo>
+                {data.wind_speed} <span>km/h</span>
+              </AdditionalInfo>
+            </AdditionalInfoSubWrapper>
+            <AdditionalInfoSubWrapper>
+              <AdditionalInfo>temp</AdditionalInfo>
+              <AdditionalInfo>{data.temp} °C</AdditionalInfo>
+            </AdditionalInfoSubWrapper>
+            <AdditionalInfoSubWrapper>
+              <AdditionalInfo>feels like</AdditionalInfo>
+              <AdditionalInfo>{data.feels_like} °C</AdditionalInfo>
+            </AdditionalInfoSubWrapper>
+            <AdditionalInfoSubWrapper>
+              <AdditionalInfo>min temp</AdditionalInfo>
+              <AdditionalInfo>{data.min_temp} °C</AdditionalInfo>
+            </AdditionalInfoSubWrapper>
+            <AdditionalInfoSubWrapper>
+              <AdditionalInfo>max temp</AdditionalInfo>
+              <AdditionalInfo>{data.max_temp} °C</AdditionalInfo>
+            </AdditionalInfoSubWrapper>
           </AdditionalInfoWrapper>
         </Wrapper>
       )}

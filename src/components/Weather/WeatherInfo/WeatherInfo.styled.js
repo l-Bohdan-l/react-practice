@@ -97,3 +97,21 @@ export const AdditionalInfoWrapper = styled.div`
   width: 400px;
   padding: 20px;
 `;
+
+export const AdditionalInfoSubWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 40px;
+`;
+
+export const AdditionalInfo = styled.p`
+  font-size: 20px;
+  font-weight: 700;
+  text-align: left;
+  text-transform: capitalize;
+
+  & > span {
+    text-transform: lowercase;
+  }
+`;
