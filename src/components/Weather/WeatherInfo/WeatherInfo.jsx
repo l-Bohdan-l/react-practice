@@ -2,6 +2,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
 import { BiCurrentLocation } from "react-icons/bi";
+import { BsSunFill, BsCloudSunFill } from "react-icons/bs";
+import { AiFillCloud } from "react-icons/ai";
 
 import { weatherCityName } from "../../../redux/selectors/selectors.js";
 import { useGetWeatherForCityQuery } from "../../../redux/weatherSlice.js";
@@ -19,6 +21,7 @@ import {
   Wrapper,
   AdditionalInfoSubWrapper,
   AdditionalInfo,
+  MainWeatherInfoBgImgDarkOverlay,
 } from "./WeatherInfo.styled.js";
 import { useGetCityImgQuery } from "../../../redux/cityImgSlice.js";
 
@@ -37,9 +40,6 @@ export const WeatherInfo = () => {
       setImgUrl(img.hits[0].webformatURL);
     }
   }, [img]);
-
-  console.log("name", cityName);
-  console.log("data", data, "error", error, "loading", isLoading);
 
   const currentDate = new Date();
 
@@ -67,9 +67,9 @@ export const WeatherInfo = () => {
     <>
       {data && img && (
         <Wrapper>
-          <MainWeatherInfoBgImgWrapper
-            src={imgUrl}
-          ></MainWeatherInfoBgImgWrapper>
+          <MainWeatherInfoBgImgWrapper src={imgUrl}>
+            <MainWeatherInfoBgImgDarkOverlay></MainWeatherInfoBgImgDarkOverlay>
+          </MainWeatherInfoBgImgWrapper>
           <MainWeatherInfoWrapper>
             <div>
               <Day>{day}</Day>
@@ -84,8 +84,17 @@ export const WeatherInfo = () => {
               </CityNameWrapper>
             </div>
             <div>
+              {data.cloud_pct <= 15 && <BsSunFill size={60} />}
+              {data.cloud_pct > 15 && data.cloud_pct <= 75 && (
+                <BsCloudSunFill size={60} />
+              )}
+              {data.cloud_pct > 75 && <AiFillCloud size={60} />}
               <Temperature>{data.temp}°C</Temperature>
-              {data}
+              {data.cloud_pct <= 15 && <WeatherType>Sunny</WeatherType>}
+              {data.cloud_pct > 15 && data.cloud_pct <= 75 && (
+                <WeatherType>Partly Cloudy</WeatherType>
+              )}
+              {data.cloud_pct > 75 && <WeatherType>Cloudy</WeatherType>}
             </div>
           </MainWeatherInfoWrapper>
           <AdditionalInfoWrapper>

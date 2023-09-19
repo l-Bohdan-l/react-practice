@@ -1,4 +1,9 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
+
+import { searchCityValue } from "../../../redux/weatherSlice";
+
 import {
   Button,
   Form,
@@ -8,8 +13,6 @@ import {
   Span,
   Wrapper,
 } from "./WeatherSearch.styled";
-import { searchCityValue } from "../../../redux/weatherSlice";
-import { useState } from "react";
 
 export const WeatherSearch = () => {
   const [value, setValue] = useState("");
@@ -34,6 +37,7 @@ export const WeatherSearch = () => {
             type="text"
             onChange={handleChange}
             value={value}
+            required
           />
           <Label htmlFor="weatherSearch">City</Label>
         </InputWrapper>

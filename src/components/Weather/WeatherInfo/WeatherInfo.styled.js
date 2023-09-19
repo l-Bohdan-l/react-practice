@@ -33,6 +33,15 @@ export const MainWeatherInfoBgImgWrapper = styled.div`
   left: -5px;
 `;
 
+export const MainWeatherInfoBgImgDarkOverlay = styled.div`
+  background-color: #00000033;
+  position: absolute;
+  z-index: 100000;
+  height: 420px;
+  width: 300px;
+  border-radius: 50px;
+`;
+
 export const MainWeatherInfoWrapper = styled.div`
   position: absolute;
   top: 0;
