@@ -124,3 +124,20 @@ export const AdditionalInfo = styled.p`
     text-transform: lowercase;
   }
 `;
+
+export const ErrorWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const ErrorMessage = styled.p`
+  font-size: 40px;
+  font-weight: 700;
+`;
+
+export const LoadingWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;

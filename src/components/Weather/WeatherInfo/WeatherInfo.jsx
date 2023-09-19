@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { BiCurrentLocation } from "react-icons/bi";
 import { BsSunFill, BsCloudSunFill } from "react-icons/bs";
 import { AiFillCloud } from "react-icons/ai";
+import { ColorRing } from "react-loader-spinner";
 
 import { weatherCityName } from "../../../redux/selectors/selectors.js";
 import { useGetWeatherForCityQuery } from "../../../redux/weatherSlice.js";
@@ -22,24 +23,29 @@ import {
   AdditionalInfoSubWrapper,
   AdditionalInfo,
   MainWeatherInfoBgImgDarkOverlay,
+  ErrorWrapper,
+  ErrorMessage,
+  LoadingWrapper,
 } from "./WeatherInfo.styled.js";
 import { useGetCityImgQuery } from "../../../redux/cityImgSlice.js";
 
 export const WeatherInfo = () => {
   const [imgUrl, setImgUrl] = useState("");
   const cityName = useSelector(weatherCityName);
-  const { data, error, isLoading } = useGetWeatherForCityQuery(cityName);
+  const { data, error, isFetching } = useGetWeatherForCityQuery(cityName);
   const {
     data: img,
     error: imgError,
-    isLoading: imgIsLoading,
+    isFetching: imgIsLoading,
   } = useGetCityImgQuery(cityName);
 
   useEffect(() => {
-    if (img) {
+    if (data && img && img.hits[0]) {
       setImgUrl(img.hits[0].webformatURL);
+      return;
     }
-  }, [img]);
+    setImgUrl(null);
+  }, [data, img]);
 
   const currentDate = new Date();
 
@@ -65,7 +71,22 @@ export const WeatherInfo = () => {
 
   return (
     <>
-      {data && img && (
+      {isFetching && (
+        <LoadingWrapper>
+          <ColorRing />
+        </LoadingWrapper>
+      )}
+      {imgIsLoading && (
+        <LoadingWrapper>
+          <ColorRing />
+        </LoadingWrapper>
+      )}
+      {error && !isFetching && (
+        <ErrorWrapper>
+          <ErrorMessage>Sorry, no weather info about "{cityName}"</ErrorMessage>
+        </ErrorWrapper>
+      )}
+      {data && !error && !isFetching && (
         <Wrapper>
           <MainWeatherInfoBgImgWrapper src={imgUrl}>
             <MainWeatherInfoBgImgDarkOverlay></MainWeatherInfoBgImgDarkOverlay>
