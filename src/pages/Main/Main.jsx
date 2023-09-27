@@ -9,6 +9,7 @@ export default function Main() {
         <LinkStyled to="/ip">IP Lookup system</LinkStyled>
         <LinkStyled to="/image-to-text"> Image to text convert</LinkStyled>
         <LinkStyled to="/weather">Weather</LinkStyled>
+        <LinkStyled to="/tic-tac-toe">Tic Tac Toe</LinkStyled>
       </List>
     </Section>
   );
