@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { Square } from "../Square/Square";
-import { BoardRowWrapper, BoardWrapper } from "./Board.styled";
+import {
+  BoardRowWrapper,
+  BoardWrapper,
+  MainWrapper,
+  NextMessage,
+  WinnerMessage,
+  WinnerMessageWrapper,
+} from "./Board.styled";
 import { useEffect } from "react";
 
 export const Board = () => {
@@ -65,9 +72,8 @@ export const Board = () => {
   }, [squares]);
 
   return (
-    <div>
-      <h2>{nextMessage}</h2>
-      {winnerMessage && <h2>{winnerMessage}</h2>}
+    <MainWrapper>
+      <NextMessage>{nextMessage}</NextMessage>
       <BoardWrapper>
         <BoardRowWrapper>
           <Square onSquareClick={() => handleClick(0)} value={squares[0]} />
@@ -85,6 +91,7 @@ export const Board = () => {
           <Square onSquareClick={() => handleClick(8)} value={squares[8]} />
         </BoardRowWrapper>
       </BoardWrapper>
-    </div>
+      {winnerMessage && <WinnerMessage>{winnerMessage}</WinnerMessage>}
+    </MainWrapper>
   );
 };
