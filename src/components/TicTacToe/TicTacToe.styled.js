@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const SectionStyled = styled.section`
@@ -10,6 +11,8 @@ export const SectionStyled = styled.section`
     rgba(5, 50, 184, 1) 51%,
     rgba(94, 3, 83, 1) 100%
   );
+  display: flex;
+  flex-direction: column;
 `;
 
 export const Title = styled.h1`
@@ -18,4 +21,15 @@ export const Title = styled.h1`
   font-weight: 700;
   text-align: center;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+`;
+
+export const BackBtn = styled(Link)`
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  &:hover {
+    color: #ffffff;
+  }
 `;

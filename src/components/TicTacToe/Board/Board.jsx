@@ -7,6 +7,7 @@ import {
   NextMessage,
   WinnerMessage,
   WinnerMessageWrapper,
+  FireWorksWrapper,
 } from "./Board.styled";
 import { useEffect } from "react";
 
@@ -91,7 +92,14 @@ export const Board = () => {
           <Square onSquareClick={() => handleClick(8)} value={squares[8]} />
         </BoardRowWrapper>
       </BoardWrapper>
-      {winnerMessage && <WinnerMessage>{winnerMessage}</WinnerMessage>}
+      {winnerMessage && (
+        <>
+          <WinnerMessage>{winnerMessage}</WinnerMessage>
+          <FireWorksWrapper position="third"></FireWorksWrapper>
+          <FireWorksWrapper position="first"></FireWorksWrapper>
+          <FireWorksWrapper position="second"></FireWorksWrapper>
+        </>
+      )}
     </MainWrapper>
   );
 };
