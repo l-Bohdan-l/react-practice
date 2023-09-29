@@ -17,6 +17,7 @@ import { ImageToTextPage } from "./pages/ImageToTextPage/ImageToTextPage";
 import { WeatherPage } from "./pages/Weather/Weather";
 import { persistor, store } from "./redux/store";
 import { TicTacToePage } from "./pages/TicTacToePage/TicTacToePage";
+import { ChessPage } from "./pages/Chess/ChessPage";
 
 let router = createBrowserRouter(
   [
@@ -47,6 +48,11 @@ let router = createBrowserRouter(
     {
       path: "/tic-tac-toe",
       element: <TicTacToePage />,
+      errorElement: <Error />,
+    },
+    {
+      path: "/chess",
+      element: <ChessPage />,
       errorElement: <Error />,
     },
     {
