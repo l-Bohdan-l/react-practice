@@ -7,6 +7,7 @@ export const ChessPage = () => {
     <Section>
       <Container>
         <Title>Chess</Title>
+
         <ChessGame />
       </Container>
     </Section>

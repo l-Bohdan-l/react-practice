@@ -5,6 +5,8 @@ export const ChessGameSection = styled.div`
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px #000000;
+  width: 400px;
+  margin: 0 auto;
 `;
 
 export const ButtonList = styled.ul`
