@@ -13,18 +13,19 @@ import { toast } from "react-toastify";
 
 export const ChessGame = () => {
   const [board, setBoard] = useState(null);
-  const [game, setGame] = useState(null);
+  const [game, setGame] = useState(new Chess());
   const [moveCount, setMoveCount] = useState(1);
   const [userColor, setUserColor] = useState("white");
   const [movesHistoryArray, setMovesHistoryArray] = useState([]);
+  const [position, setPosition] = useState("start");
 
-  useEffect(() => {
-    setGame(new Chess());
-  }, []);
+  // useEffect(() => {
+  //   setGame(new Chess());
+  // }, []);
 
   const makeRandomMove = () => {
     const possibleMoves = game.moves();
-    if (game.game_over()) {
+    if (game.isGameOver()) {
       toast.success("Checkmate!");
       return;
     }
@@ -43,7 +44,7 @@ export const ChessGame = () => {
   };
 
   const onDragStart = (source, piece) => {
-    return !game.game_over() && piece.search(userColor) === 0;
+    // return !game.isGameOver() && piece.search(userColor) === 0;
   };
 
   const onDrop = (source, target) => {
@@ -65,7 +66,7 @@ export const ChessGame = () => {
   const boardConfig = {
     showNotation: true,
     draggable: true,
-    position: "start",
+    position,
     onDragStart,
     onDrop,
     onSnapEnd,
@@ -76,7 +77,7 @@ export const ChessGame = () => {
 
   return (
     <ChessGameSection>
-      <chess-board></chess-board>
+      <chess-board ></chess-board>
       <ButtonList>
         <li>
           <Button type="button">Play Again</Button>
