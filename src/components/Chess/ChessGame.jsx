@@ -1,7 +1,5 @@
 import { Chess } from "chess.js";
-// import * as chess from "@";
-import "chessboard-element";
-import Draggable from "react-draggable";
+import { Chessboard } from "react-chessboard";
 import { useEffect, useRef, useState } from "react";
 import {
   Button,
@@ -29,7 +27,7 @@ export const ChessGame = () => {
     const move =
       possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
     game.move(move);
-    board.position(game.fen());
+    // board.position(game.fen());
     saveMove(move, moveCount);
     setMoveCount(moveCount + 1);
   };
@@ -46,16 +44,31 @@ export const ChessGame = () => {
     return !game.game_over() && piece.search(userColor) === 0;
   };
 
-  const onDrop = (source, target) => {
-    const move = game.move({
-      from: source,
-      to: target,
-      promotion: "q",
-    });
-    if (move === null) return "snapback";
-    window.setTimeout(makeRandomMove, 250);
-    saveMove(move.san, moveCount);
-    setMoveCount(moveCount + 1);
+  const onDrop = (sourceSquare, targetSquare, piece) => {
+    try {
+      const gameCopy = { ...game };
+      console.log("game", game);
+      console.log("copy", gameCopy);
+      const move = game.move({
+        from: sourceSquare,
+        to: targetSquare,
+        // promotion: "q",
+        promotion: piece[1].toLowerCase() ?? "q",
+      });
+      console.log("1", move);
+      if (move === null) {
+        console.log("2", move);
+        console.log("illegal move");
+        return;
+      }
+      console.log("3", move);
+      window.setTimeout(makeRandomMove, 250);
+      saveMove(move.san, moveCount);
+      setMoveCount(moveCount + 1);
+      // setGame(gameCopy);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const onSnapEnd = () => {
@@ -68,20 +81,19 @@ export const ChessGame = () => {
     onSnapEnd,
   };
 
-  console.log(board);
+  console.log("board", board);
 
   return (
     <ChessGameSection>
-      <chess-board
+      <Chessboard
         ref={boardRef}
-        draggable-pieces
-        drop-off-board="snapback"
-        position={position}
-        showNotation
-        moveSpeed="fast"
-        snapBackSpeed="500"
-        snapSpeed="100"
-      ></chess-board>
+        position={game.fen()}
+        onPieceDrop={onDrop}
+        customBoardStyle={{
+          borderRadius: "4px",
+          boxShadow: "0 2px 10px rgba(0, 0, 0, 0.5)",
+        }}
+      />
       <ButtonList>
         <li>
           <Button type="button">Play Again</Button>

@@ -16,6 +16,7 @@ export const ButtonList = styled.ul`
   justify-content: center;
   gap: 10px;
   margin-bottom: 20px;
+  margin-top: 20px;
 `;
 
 export const Button = styled.button`
