@@ -15,7 +15,7 @@ export const ChessGame = () => {
   const [game, setGame] = useState(new Chess());
   const [moveCount, setMoveCount] = useState(1);
   const [userColor, setUserColor] = useState("white");
-  const [movesHistoryArray, setMovesHistoryArray] = useState([]);
+  const [movesHistoryArray, setMovesHistoryArray] = useState(null);
   const [position, setPosition] = useState("start");
 
   const makeRandomMove = () => {
@@ -45,11 +45,11 @@ export const ChessGame = () => {
   };
 
   const onDrop = (sourceSquare, targetSquare, piece) => {
+    setMovesHistoryArray(game.history());
     try {
-      const gameCopy = { ...game };
-      console.log("game", game);
-      console.log("copy", gameCopy);
-      const move = game.move({
+      const gameCopy = new Chess(game.fen());
+
+      const move = gameCopy.move({
         from: sourceSquare,
         to: targetSquare,
         // promotion: "q",
@@ -65,7 +65,7 @@ export const ChessGame = () => {
       window.setTimeout(makeRandomMove, 250);
       saveMove(move.san, moveCount);
       setMoveCount(moveCount + 1);
-      // setGame(gameCopy);
+      setGame(gameCopy);
     } catch (error) {
       console.log(error);
     }
@@ -82,7 +82,7 @@ export const ChessGame = () => {
   };
 
   console.log("board", board);
-
+  console.log("history", movesHistoryArray);
   return (
     <ChessGameSection>
       <Chessboard
