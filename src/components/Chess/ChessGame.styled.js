@@ -19,14 +19,20 @@ export const ButtonList = styled.ul`
   margin-top: 20px;
 `;
 
+export const ButtonListItem = styled.li`
+  cursor: pointer;
+  /* flex-basis: calc((100%-30px) / 4); */
+  flex-basis: calc((100% - 30px) / 4);
+`;
+
 export const Button = styled.button`
-  padding: 10px;
+  padding: 5px;
   color: #ffffff;
   background-color: #000000;
   border-radius: 5px;
   cursor: pointer;
-  width: 100px;
-  height: 40px;
+  width: 100%;
+  height: 45px;
   transition: all 0.3s ease;
   font-size: 14px;
   &:hover {

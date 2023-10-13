@@ -4,10 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import {
   Button,
   ButtonList,
+  ButtonListItem,
   ChessGameSection,
   MoveHistory,
 } from "./ChessGame.styled";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 
 export const ChessGame = () => {
   const boardRef = useRef(null);
@@ -15,13 +16,22 @@ export const ChessGame = () => {
   const [game, setGame] = useState(new Chess());
   const [moveCount, setMoveCount] = useState(1);
   const [userColor, setUserColor] = useState("white");
-  const [movesHistoryArray, setMovesHistoryArray] = useState(null);
+  const [movesHistoryArray, setMovesHistoryArray] = useState([]);
   const [position, setPosition] = useState("start");
+  const [currentTimeout, setCurrentTimeout] = useState(null);
+
+  const safeGameMutate = (modify) => {
+    setGame((game) => {
+      const update = { ...game };
+      modify(update);
+      return update;
+    });
+  };
 
   const makeRandomMove = () => {
     const possibleMoves = game.moves();
     if (game.isGameOver()) {
-      toast.success("Checkmate!");
+      toast.success("Game over!");
       return;
     }
     const move =
@@ -33,56 +43,56 @@ export const ChessGame = () => {
   };
 
   const saveMove = (move, count) => {
-    const formattedMove =
-      count % 2 === 1 ? `${Math.ceil(count / 2)} , ${move}` : `${move} -`;
+    const formattedMove = `${count} - ${move}`;
+    // count % 2 === 1 ? `${Math.ceil(count / 2)}. ${move}` : `${move} -`;
     setMovesHistoryArray((prevState) => [...prevState, formattedMove]);
   };
 
-  const onDragStart = (e) => {
-    console.log("first");
-    const { piece } = e.detail;
-    return !game.game_over() && piece.search(userColor) === 0;
-  };
+  // const onDragStart = (e) => {
+  //   console.log("first");
+  //   const { piece } = e.detail;
+  //   return !game.game_over() && piece.search(userColor) === 0;
+  // };
 
   const onDrop = (sourceSquare, targetSquare, piece) => {
-    setMovesHistoryArray(game.history());
-    try {
-      const gameCopy = new Chess(game.fen());
+    // setMovesHistoryArray(game.history());
 
-      const move = gameCopy.move({
+    try {
+      // const gameCopy = new Chess(game.fen());
+
+      const move = game.move({
         from: sourceSquare,
         to: targetSquare,
         // promotion: "q",
         promotion: piece[1].toLowerCase() ?? "q",
       });
-      console.log("1", move);
-      if (move === null) {
-        console.log("2", move);
-        console.log("illegal move");
-        return;
-      }
-      console.log("3", move);
-      window.setTimeout(makeRandomMove, 250);
+
+      if (move === null) return "snapback";
+
+      // window.setTimeout(makeRandomMove, 250);
+      const newTimeout = setTimeout(makeRandomMove, 200);
+      setCurrentTimeout(newTimeout);
       saveMove(move.san, moveCount);
       setMoveCount(moveCount + 1);
-      setGame(gameCopy);
+      // setGame(gameCopy);
     } catch (error) {
+      toast.error("invalid move");
       console.log(error);
     }
   };
 
-  const onSnapEnd = () => {
-    board.position(game.fen());
+  // const onSnapEnd = () => {
+  //   board.position(game.fen());
+  // };
+  const undoMove = () => {
+    console.log("click", game.undo());
+
+    game.undo();
+    clearTimeout(currentTimeout);
   };
 
-  const boardConfig = {
-    onDragStart,
-    onDrop,
-    onSnapEnd,
-  };
+  console.log("game,", game.fen());
 
-  console.log("board", board);
-  console.log("history", movesHistoryArray);
   return (
     <ChessGameSection>
       <Chessboard
@@ -95,15 +105,30 @@ export const ChessGame = () => {
         }}
       />
       <ButtonList>
-        <li>
-          <Button type="button">Play Again</Button>
-        </li>
-        <li>
+        <ButtonListItem>
+          <Button
+            onClick={() => {
+              safeGameMutate((game) => {
+                game.reset();
+              });
+              clearTimeout(currentTimeout);
+            }}
+            type="button"
+          >
+            Play Again
+          </Button>
+        </ButtonListItem>
+        <ButtonListItem>
           <Button type="button">Set Position</Button>
-        </li>
-        <li>
+        </ButtonListItem>
+        <ButtonListItem>
           <Button type="button">Flip Board</Button>
-        </li>
+        </ButtonListItem>
+        <ButtonListItem>
+          <Button onClick={undoMove} type="button">
+            Undo
+          </Button>
+        </ButtonListItem>
       </ButtonList>
       <MoveHistory id="moveHistory">
         {movesHistoryArray &&
@@ -111,6 +136,7 @@ export const ChessGame = () => {
             return <p>{move}</p>;
           })}
       </MoveHistory>
+      <ToastContainer />
     </ChessGameSection>
   );
 };
