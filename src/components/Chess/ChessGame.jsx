@@ -17,7 +17,7 @@ export const ChessGame = () => {
   const [moveCount, setMoveCount] = useState(1);
   const [userColor, setUserColor] = useState("white");
   const [movesHistoryArray, setMovesHistoryArray] = useState([]);
-  const [position, setPosition] = useState("start");
+  const [position, setPosition] = useState(null);
   const [currentTimeout, setCurrentTimeout] = useState(null);
 
   const safeGameMutate = (modify) => {
@@ -118,19 +118,50 @@ export const ChessGame = () => {
     setMovesHistoryArray([]);
   };
 
-  // console.log("game,", game.fen());
+  const [inputValue, setInputValue] = useState("");
+  const setFen = (e) => {
+    e.preventDefault();
+    // const fen = prompt("Enter FEN notation for the desired position");
+    console.log("inputValue", inputValue);
+    if (inputValue === null) return;
+    if (game.load(inputValue)) {
+      game.reset();
+      game.load(inputValue);
+      // setPosition(fen);
+      clearTimeout(currentTimeout);
+      setMoveCount(1);
+      setMovesHistoryArray([]);
+      return;
+    }
+    setInputValue("");
+    return;
+  };
+  const handleinputValueChange = (e) => {
+    setInputValue(e.target.inputValue);
+  };
 
+  console.log("log before return");
   return (
     <ChessGameSection>
       <Chessboard
-        ref={boardRef}
-        position={game.fen()}
+        // ref={boardRef}
+        position={position ? game.fen(position) : game.fen()}
         onPieceDrop={onDrop}
         customBoardStyle={{
           borderRadius: "4px",
           boxShadow: "0 2px 10px rgba(0, 0, 0, 0.5)",
         }}
       />
+
+      <form onSubmit={setFen}>
+        <input
+          type="text"
+          name=""
+          inputValue={inputValue}
+          onChange={handleinputValueChange}
+        />
+        <button type="submit">Click</button>
+      </form>
       <ButtonList>
         <ButtonListItem>
           <Button onClick={resetGame} type="button">
@@ -138,7 +169,9 @@ export const ChessGame = () => {
           </Button>
         </ButtonListItem>
         <ButtonListItem>
-          <Button type="button">Set Position</Button>
+          <Button onClick={setFen} type="button">
+            Set Position
+          </Button>
         </ButtonListItem>
         <ButtonListItem>
           <Button type="button">Flip Board</Button>
