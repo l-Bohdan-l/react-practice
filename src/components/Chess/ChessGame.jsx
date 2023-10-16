@@ -21,16 +21,28 @@ export const ChessGame = () => {
   const [currentTimeout, setCurrentTimeout] = useState(null);
 
   const safeGameMutate = (modify) => {
-    setGame((game) => {
-      const update = { ...game };
-      modify(update);
-      return update;
-    });
+    // const update = { ...game };
+    // update.reset = game.reset;
+    // console.log("safegamemutate", update.reset);
+    console.log("modify", modify(game));
+    // setGame((prevState) => {
+    //   modify(update);
+    //   console.log("update", update, "prev", prevState, "modify", modify);
+    //   return update;
+    // });
   };
 
   const makeRandomMove = () => {
     const possibleMoves = game.moves();
     if (game.isGameOver()) {
+      if (game.isCheckmate()) {
+        toast.success("Checkmate!");
+        return;
+      }
+      if (game.isDraw()) {
+        toast.success("It's a Draw!");
+        return;
+      }
       toast.success("Game over!");
       return;
     }
@@ -85,13 +97,28 @@ export const ChessGame = () => {
   //   board.position(game.fen());
   // };
   const undoMove = () => {
-    console.log("click", game.undo());
-
+    game.undo();
     game.undo();
     clearTimeout(currentTimeout);
+    setMoveCount((prev) => prev - 1);
+    // saveMove(game.)
+    const copy = [...movesHistoryArray];
+    const index = copy.length - 2;
+    const arr = copy.splice(index, 2);
+    setMovesHistoryArray(copy);
+
+    console.log("copy", copy, "index", index, "arr", arr);
+  };
+  // console.log(movesHistoryArray.reverse());
+
+  const resetGame = () => {
+    game.reset();
+    clearTimeout(currentTimeout);
+    setMoveCount(1);
+    setMovesHistoryArray([]);
   };
 
-  console.log("game,", game.fen());
+  // console.log("game,", game.fen());
 
   return (
     <ChessGameSection>
@@ -106,15 +133,7 @@ export const ChessGame = () => {
       />
       <ButtonList>
         <ButtonListItem>
-          <Button
-            onClick={() => {
-              safeGameMutate((game) => {
-                game.reset();
-              });
-              clearTimeout(currentTimeout);
-            }}
-            type="button"
-          >
+          <Button onClick={resetGame} type="button">
             Play Again
           </Button>
         </ButtonListItem>
@@ -131,10 +150,19 @@ export const ChessGame = () => {
         </ButtonListItem>
       </ButtonList>
       <MoveHistory id="moveHistory">
-        {movesHistoryArray &&
-          movesHistoryArray.map((move) => {
-            return <p>{move}</p>;
-          })}
+        {movesHistoryArray && (
+          <ul>
+            {movesHistoryArray
+              .map((move) => {
+                return (
+                  <li key={move}>
+                    <p>{move}</p>
+                  </li>
+                );
+              })
+              .reverse()}
+          </ul>
+        )}
       </MoveHistory>
       <ToastContainer />
     </ChessGameSection>
