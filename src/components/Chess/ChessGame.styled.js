@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const ChessGameSection = styled.div`
@@ -35,6 +36,7 @@ export const Button = styled.button`
   height: 45px;
   transition: all 0.3s ease;
   font-size: 14px;
+
   &:hover {
     color: #000000;
     background-color: #ffffff;
@@ -48,4 +50,25 @@ export const MoveHistory = styled.div`
   border: 1px solid #7b6969b8;
   border-radius: 5px;
   background-color: #c5b8b887;
+`;
+
+export const GameWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const BackBtn = styled(Link)`
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  display: block;
+  margin-bottom: 15px;
+  transition: all 0.5s linear;
+  &:hover {
+    color: #ffffff;
+  }
 `;

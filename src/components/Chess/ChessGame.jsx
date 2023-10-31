@@ -2,10 +2,12 @@ import { Chess } from "chess.js";
 import { Chessboard } from "react-chessboard";
 import { useEffect, useRef, useState } from "react";
 import {
+  BackBtn,
   Button,
   ButtonList,
   ButtonListItem,
   ChessGameSection,
+  GameWrapper,
   MoveHistory,
 } from "./ChessGame.styled";
 import { ToastContainer, toast } from "react-toastify";
@@ -96,63 +98,56 @@ export const ChessGame = () => {
       default:
         break;
     }
+    makeRandomMove();
   };
 
-  // useEffect(() => {
-  //   const whoseTurn = game.turn();
-  //   console.log(whoseTurn);
-  //   if (whoseTurn === "w" && userColor === "black") {
-  //     const newTimeout = setTimeout(makeRandomMove, 200);
-  //     setCurrentTimeout(newTimeout);
-  //   }
-  // }, [game, movesHistoryArray]);
-
-  const whoseTurn = game.turn();
-  console.log("1", whoseTurn);
   return (
-    <ChessGameSection>
-      <Chessboard
-        position={position ? game.fen(position) : game.fen()}
-        onPieceDrop={onDrop}
-        customBoardStyle={{
-          borderRadius: "4px",
-          boxShadow: "0 2px 10px rgba(0, 0, 0, 0.5)",
-        }}
-        boardOrientation={userColor}
-      />
-      <ButtonList>
-        <ButtonListItem>
-          <Button onClick={resetGame} type="button">
-            Play Again
-          </Button>
-        </ButtonListItem>
-        <ButtonListItem>
-          <Button onClick={setOrientation} type="button">
-            Flip Board
-          </Button>
-        </ButtonListItem>
-        <ButtonListItem>
-          <Button onClick={undoMove} type="button">
-            Undo
-          </Button>
-        </ButtonListItem>
-      </ButtonList>
-      <MoveHistory id="moveHistory">
-        {movesHistoryArray && (
-          <ul>
-            {movesHistoryArray
-              .map((move) => {
-                return (
-                  <li key={move}>
-                    <p>{move}</p>
-                  </li>
-                );
-              })
-              .reverse()}
-          </ul>
-        )}
-      </MoveHistory>
-      <ToastContainer />
-    </ChessGameSection>
+    <GameWrapper>
+      <BackBtn to="/">Go Home</BackBtn>
+      <ChessGameSection>
+        <Chessboard
+          position={position ? game.fen(position) : game.fen()}
+          onPieceDrop={onDrop}
+          customBoardStyle={{
+            borderRadius: "4px",
+            boxShadow: "0 2px 10px rgba(0, 0, 0, 0.5)",
+          }}
+          boardOrientation={userColor}
+        />
+        <ButtonList>
+          <ButtonListItem>
+            <Button onClick={resetGame} type="button">
+              Play Again
+            </Button>
+          </ButtonListItem>
+          <ButtonListItem>
+            <Button onClick={setOrientation} type="button">
+              Flip Board
+            </Button>
+          </ButtonListItem>
+          <ButtonListItem>
+            <Button onClick={undoMove} type="button">
+              Undo
+            </Button>
+          </ButtonListItem>
+        </ButtonList>
+        <MoveHistory id="moveHistory">
+          {movesHistoryArray && (
+            <ul>
+              {movesHistoryArray
+                .map((move) => {
+                  return (
+                    <li key={move}>
+                      <p>{move}</p>
+                    </li>
+                  );
+                })
+                .reverse()}
+            </ul>
+          )}
+        </MoveHistory>
+        <ToastContainer />
+      </ChessGameSection>
+    </GameWrapper>
   );
 };
