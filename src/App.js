@@ -18,6 +18,7 @@ import { WeatherPage } from "./pages/Weather/Weather";
 import { persistor, store } from "./redux/store";
 import { TicTacToePage } from "./pages/TicTacToePage/TicTacToePage";
 import { ChessPage } from "./pages/Chess/ChessPage";
+import ChuckNorrisPage from "./pages/ChuckNorrisPage/ChuckNorrisPage";
 
 let router = createBrowserRouter(
   [
@@ -53,6 +54,11 @@ let router = createBrowserRouter(
     {
       path: "/chess",
       element: <ChessPage />,
+      errorElement: <Error />,
+    },
+    {
+      path: "/chucknorris",
+      element: <ChuckNorrisPage />,
       errorElement: <Error />,
     },
     {

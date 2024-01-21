@@ -24,6 +24,9 @@ export default function Main() {
           <ListItem>
             <LinkStyled to="/chess">Chess</LinkStyled>
           </ListItem>
+          <ListItem>
+            <LinkStyled to="/chucknorris">Chuck Norris</LinkStyled>
+          </ListItem>
         </List>
       </Container>
     </Section>
